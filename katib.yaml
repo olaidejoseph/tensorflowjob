@@ -2,6 +2,7 @@ apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
   name: katib-tfjob-experiment
+  namespace: kubeflow-josepholaide10
 spec:
   parallelTrialCount: 3
   maxTrialCount: 12
@@ -45,7 +46,7 @@ spec:
                   containers:
                     - name: tensorflow
                       # modify this property if you would like to use a custom image
-                      image: mesosphere/kubeflow:mnist-tensorflow-2.2-1.0.1-0.5.0
+                      image: josephcruisedocker8624/tfjob:6.0
                       imagePullPolicy: Always
                       command: ["python", "/tfjob.py"]
                       args:
