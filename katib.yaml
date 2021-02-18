@@ -61,3 +61,4 @@ spec:
                       - "--log_dir=/train/metrics"
                       - "--learning_rate=${trialParameters.learningRate}"
                       - "--batch_size=${trialParameters.batchSize}"
+		      
