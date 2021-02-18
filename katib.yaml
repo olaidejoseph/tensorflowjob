@@ -38,9 +38,9 @@ spec:
       - name: learningRate
         description: Learning rate for the training model
         reference: learning_rate
-      - name: batchSize
+      - name: optimizer
         description: Batch Size
-        reference: batch_size
+        reference: optimizer
     trialSpec:
       apiVersion: "kubeflow.org/v1"
       kind: TFJob
@@ -56,8 +56,8 @@ spec:
                     image: gcr.io/kubeflow-ci/tf-mnist-with-summaries:1.0
                     imagePullPolicy: Always
                     command:
-                      - "python"
-                      - "/var/tf_mnist/mnist_with_summaries.py"
-                      - "--log_dir=/train/metrics"
+                      - "python3"
+                      - "/tfjob.py"
+                      - "--saved_model_dir=/train/metrics"
                       - "--learning_rate=${trialParameters.learningRate}"
-                      - "--batch_size=${trialParameters.batchSize}"
+                      - "--optimizer=${trialParameters.optimizer}"
