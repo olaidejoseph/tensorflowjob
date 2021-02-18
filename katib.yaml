@@ -1,7 +1,7 @@
 apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
-  name: katib-tfjob-experiment
+  name: katib-tfjob-experiment2
   namespace: kubeflow-josepholaide10
 spec:
   parallelTrialCount: 3
