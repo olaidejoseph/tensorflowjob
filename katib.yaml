@@ -39,7 +39,7 @@ spec:
         description: Learning rate for the training model
         reference: learning_rate
       - name: optimizer
-        description: Batch Size
+        description: Model Optimizer
         reference: optimizer
     trialSpec:
       apiVersion: "kubeflow.org/v1"
@@ -50,6 +50,9 @@ spec:
             replicas: 2
             restartPolicy: OnFailure
             template:
+              metadata:
+                annotations:
+                  sidecar.istio.io/inject: "false:
               spec:
                 containers:
                   - name: tensorflow
