@@ -52,9 +52,9 @@ spec:
 	    template:
 	      metadata:
 	        annotations:
-                  sidecar.istio.io/inject: "false"
+		  sidecar.istio.io/inject: "false"
 	      spec:
-		containers:
+	        containers:
 		  - name: tensorflow
 		    image: mavencodev/tfjob:6.0
 		    imagePullPolicy: Always
