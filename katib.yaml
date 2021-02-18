@@ -27,10 +27,11 @@ spec:
         min: "0.001"
         max: "0.05"
     - name: optimizer
-      parameterType: list
+      parameterType: categorical
       feasibleSpace:
         list:
           - sgd
+	  - adam
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
