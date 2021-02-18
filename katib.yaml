@@ -50,17 +50,14 @@ spec:
             replicas: 2
             restartPolicy: OnFailure
 	    template:
-	      metadata:
-	        annotations:
-		  sidecar.istio.io/inject: "false"
-	      spec:
-	        containers:
-		  - name: tensorflow
-		    image: mavencodev/tfjob:6.0
-		    imagePullPolicy: Always
-		    command:
-		      - "python3"
-		      - "/tfjob.py"
-		      - "--saved_model_dir=/train/saved_model/"
-		      - "--learning_rate=${trialParameters.learningRate}"
-		      - "--optimizer=${trialParameters.optimizer}"
+              spec:
+                containers:
+                  - name: tensorflow
+                    image: gcr.io/kubeflow-ci/tf-mnist-with-summaries:1.0
+                    imagePullPolicy: Always
+                    command:
+                      - "python"
+                      - "/var/tf_mnist/mnist_with_summaries.py"
+                      - "--log_dir=/train/metrics"
+                      - "--learning_rate=${trialParameters.learningRate}"
+                      - "--batch_size=${trialParameters.batchSize}"
