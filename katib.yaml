@@ -31,7 +31,6 @@ spec:
       feasibleSpace:
         list:
           - sgd
-	  - adam
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
