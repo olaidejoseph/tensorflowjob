@@ -30,8 +30,8 @@ spec:
       parameterType: list
       feasibleSpace:
         list:
-          - 'sgd'
-	  - 'adam'
+          - sgd
+	  - adam
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
