@@ -1,7 +1,7 @@
 apiVersion: "kubeflow.org/v1beta1"
 kind: Experiment
 metadata:
-  namespace: kubeflow
+  namespace: kubeflow-josepholaide10
   name: tfjob-example
 spec:
   parallelTrialCount: 3
@@ -26,11 +26,12 @@ spec:
       feasibleSpace:
         min: "0.01"
         max: "0.05"
-    - name: batch_size
-      parameterType: int
+    - name: optimizer
+      parameterType: categorical
       feasibleSpace:
-        min: "100"
-        max: "200"
+        list:
+          - sgd
+          - adam
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
