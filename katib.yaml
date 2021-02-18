@@ -1,7 +1,7 @@
 apiVersion: "kubeflow.org/v1beta1"
 kind: Experiment
 metadata:
-  namespace: kubeflow-josepholaide10
+  namespace: kubeflow
   name: tfjob-example
 spec:
   parallelTrialCount: 3
@@ -24,32 +24,31 @@ spec:
     - name: learning_rate
       parameterType: double
       feasibleSpace:
-        min: "0.001"
+        min: "0.01"
         max: "0.05"
-    - name: optimizer
-      parameterType: categorical
+    - name: batch_size
+      parameterType: int
       feasibleSpace:
-        list:
-          - sgd
-          - adam
+        min: "100"
+        max: "200"
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
       - name: learningRate
         description: Learning rate for the training model
         reference: learning_rate
-      - name: optimizer
-        description: Model optimizer
-        reference: optimizer
+      - name: batchSize
+        description: Batch Size
+        reference: batch_size
     trialSpec:
-      apiVersion: batch/v1
+      apiVersion: "kubeflow.org/v1"
       kind: TFJob
       spec:
         tfReplicaSpecs:
           Worker:
             replicas: 2
             restartPolicy: OnFailure
-	    template:
+            template:
               spec:
                 containers:
                   - name: tensorflow
@@ -61,4 +60,3 @@ spec:
                       - "--log_dir=/train/metrics"
                       - "--learning_rate=${trialParameters.learningRate}"
                       - "--batch_size=${trialParameters.batchSize}"
-		      
