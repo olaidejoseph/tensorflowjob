@@ -56,7 +56,7 @@ spec:
               spec:
                 containers:
                   - name: tensorflow
-                    image: gcr.io/kubeflow-ci/tf-mnist-with-summaries:1.0
+                    image: mavencodev/tfjob:6.0
                     imagePullPolicy: Always
                     command:
                       - "python3"
