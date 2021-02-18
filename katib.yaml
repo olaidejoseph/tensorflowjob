@@ -1,37 +1,37 @@
-apiVersion: kubeflow.org/v1beta1
+apiVersion: "kubeflow.org/v1beta1"
 kind: Experiment
 metadata:
-  namespace: josephadmin 
-  labels:
-    controller-tools.k8s.io: '1.0'
-  name: experiment-one
-spec: 
+  namespace: kubeflow-josepholaide10
+  name: tfjob-example
+spec:
   parallelTrialCount: 3
   maxTrialCount: 12
-  maxFailedTrialCount: 3 
-  objective: 
+  maxFailedTrialCount: 3
+  objective:
     type: maximize
     goal: 0.99
-    objectiveMetricName: accuracy
-    additionalMetricNames:
-  metricsCollectorSpec: 
+    objectiveMetricName: accuracy_1
+  algorithm:
+    algorithmName: random
+  metricsCollectorSpec:
+    source:
+      fileSystemPath:
+        path: /train
+        kind: Directory
     collector:
-      kind: StdOut
-  algorithms:
-    algorithmName: random 
+      kind: TensorFlowEvent
   parameters:
     - name: learning_rate
       parameterType: double
       feasibleSpace:
-        list:
-        min: 0.001
-        max: 0.01
+        min: "0.001"
+        max: "0.05"
     - name: optimizer
-      parameterType: categorical
+      parameterType: list
       feasibleSpace:
         list:
-          - sgd
-          - adam
+          - 'sgd'
+	  - 'adam'
   trialTemplate:
     primaryContainerName: tensorflow
     trialParameters:
@@ -39,24 +39,28 @@ spec:
         description: Learning rate for the training model
         reference: learning_rate
       - name: optimizer
-        description: Training model optimizer (sdg, adam)
+        description: Model optimizer
         reference: optimizer
     trialSpec:
       apiVersion: batch/v1
       kind: TFJob
       spec:
-        template:
-	  metadata:
-            annotations:
-              sidecar.istio.io/inject: "false"
-          spec:
-            containers:
-              - name: tensorflow
-                image: josephcruisedocker8624/tfjob:6.0
-                command:
-                  - "python3"
-                  - "/tfjob.py"
-                  - "--saved_model_dir=/train/saved_model/"
-                  - "--learning_rate=${trialParameters.learningRate}"
-                  - "--optimizer=${trialParameters.optimizer}"
-            restartPolicy: Never
+        tfReplicaSpecs:
+          Worker:
+            replicas: 2
+            restartPolicy: OnFailure
+	    template:
+	      metadata:
+		annotations:
+		  sidecar.istio.io/inject: "false"
+	      spec:
+		containers:
+		  - name: tensorflow
+		    image: mavencodev/tfjob:6.0
+		    imagePullPolicy: Always
+		    command:
+		      - "python3"
+		      - "/tfjob.py"
+		      - "--saved_model_dir=/train/saved_model/"
+		      - "--learning_rate=${trialParameters.learningRate}"
+		      - "--optimizer=${trialParameters.optimizer}"
